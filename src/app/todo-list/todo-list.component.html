@@ -1,3 +1,6 @@
 <div class="todo-list">
+    <form (ngSubmit)="addTodo()">
+        <input type="text" name="todoText" [(ngModel)]="todoText" />
+    </form>
     <app-todo-item *ngFor="let item of todos; index as i" [item]="item"></app-todo-item>
 </div>

@@ -9,22 +9,21 @@ import TodoItem from '../models/TodoItem';
 })
 export class TodoListComponent implements OnInit {
   public todos: TodoItem[] = [];
+  public todoText: string = '';
 
   constructor() { }
 
   ngOnInit(): void {
-    this.todos = this.getTodos();
   }
 
-  private getTodos(): TodoItem[] {
-    return [{
-        text: 'todo 1',
-      }, {
-        text: 'todo 2',
-      }, {
-        text: 'todo 3'
-      }
-    ];
-  }  
+  addTodo(): void {
+    const newItem: TodoItem = {
+      text: this.todoText
+    };
+
+    this.todos.push(newItem);
+
+    this.todoText = '';
+  }
 
 }

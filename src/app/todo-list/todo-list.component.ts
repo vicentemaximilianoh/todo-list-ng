@@ -1,3 +1,5 @@
+import {uniqueId} from 'lodash';
+
 import { Component, OnInit } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
@@ -18,12 +20,19 @@ export class TodoListComponent implements OnInit {
 
   addTodo(): void {
     const newItem: TodoItem = {
-      text: this.todoText
+      text: this.todoText,
+      id: uniqueId()
     };
 
     this.todos.push(newItem);
 
     this.todoText = '';
+  }
+
+  deleteItem(id: string): void {
+    this.todos = this.todos.filter((todo) => {
+      return todo.id !== id;
+    });
   }
 
 }

@@ -4,6 +4,10 @@
         <input type="text" class="todo-form-input" name="todoText" [(ngModel)]="todoText" />
     </form>
     <div class="todo-list-items">
-        <app-todo-item class="todo-item" *ngFor="let item of todos; index as i" [item]="item"></app-todo-item>
+        <app-todo-item 
+            class="todo-item" 
+            *ngFor="let item of todos; index as i" 
+            [item]="item"
+            (deleteItemEvent)="deleteItem($event)"></app-todo-item>
     </div>
 </div>

@@ -1,2 +1,2 @@
-<div class="todo-item-text">{{item.text}}</div>
+<div class="todo-item-text" (click)="editItem(item)">{{item.text}}</div>
 <button type="button" (click)="deleteItem(item.id)">x</button>

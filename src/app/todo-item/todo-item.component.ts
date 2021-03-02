@@ -11,14 +11,19 @@ export class TodoItemComponent implements OnInit {
 
   @Input() item: TodoItem;
   @Output() deleteItemEvent = new EventEmitter<string>();
+  @Output() editItemEvent = new EventEmitter<TodoItem>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  deleteItem(value: string) {
-    this.deleteItemEvent.emit(value);
+  editItem(item: TodoItem) {
+    this.editItemEvent.emit(item);
+  }
+
+  deleteItem(id: string) {
+    this.deleteItemEvent.emit(id);
   }
 
 }

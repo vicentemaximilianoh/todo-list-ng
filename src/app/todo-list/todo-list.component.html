@@ -1,6 +1,6 @@
 <div class="todo-list">
     <h1>Todo List</h1>
-    <form class="todo-form" (ngSubmit)="addTodo()">
+    <form class="todo-form" (ngSubmit)="saveTodo()">
         <input type="text" class="todo-form-input" name="todoText" [(ngModel)]="todoText" />
     </form>
     <div class="todo-list-items">
@@ -8,6 +8,7 @@
             class="todo-item" 
             *ngFor="let item of todos; index as i" 
             [item]="item"
+            (editItemEvent)="editItem($event)"
             (deleteItemEvent)="deleteItem($event)"></app-todo-item>
     </div>
 </div>

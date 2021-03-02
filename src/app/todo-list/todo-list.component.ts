@@ -12,21 +12,37 @@ import TodoItem from '../models/TodoItem';
 export class TodoListComponent implements OnInit {
   public todos: TodoItem[] = [];
   public todoText: string = '';
+  private selectedItem: TodoItem = null;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  addTodo(): void {
-    const newItem: TodoItem = {
-      text: this.todoText,
-      id: uniqueId()
-    };
+  saveTodo(): void {
+    if (this.selectedItem !== null) {
+      let idxItem: number = this.todos.findIndex((item) => {
+        return this.selectedItem.id === item.id;
+      });
+  
+      this.todos[idxItem].text = this.todoText;
 
-    this.todos.push(newItem);
+    } else {
+      const newItem: TodoItem = {
+        text: this.todoText,
+        id: uniqueId()
+      };
+  
+      this.todos.push(newItem);
+    }
 
     this.todoText = '';
+    this.selectedItem = null;
+  }
+
+  editItem(item: TodoItem): void {
+    this.todoText = item.text;
+    this.selectedItem = item;
   }
 
   deleteItem(id: string): void {

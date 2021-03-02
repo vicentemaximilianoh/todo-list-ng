@@ -1,5 +1,3 @@
 <div class="todo-list">
-    <ul>
-        <li *ngFor="let todo of todos; index as i">{{todo.text}}</li>
-    </ul>
+    <app-todo-item *ngFor="let item of todos; index as i" [item]="item"></app-todo-item>
 </div>

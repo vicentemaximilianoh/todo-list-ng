@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
+import TodoItem from '../models/TodoItem';
+
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
-  public todos: any[] = [];
+  public todos: TodoItem[] = [];
 
   constructor() { }
 
@@ -14,7 +16,7 @@ export class TodoListComponent implements OnInit {
     this.todos = this.getTodos();
   }
 
-  private getTodos(): any[] {
+  private getTodos(): TodoItem[] {
     return [{
         text: 'todo 1',
       }, {

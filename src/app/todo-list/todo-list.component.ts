@@ -1,6 +1,6 @@
 import {uniqueId} from 'lodash';
 
-import { Component, KeyValueDiffer, KeyValueDiffers, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
 import TodoFilter from '../models/TodoFilter';
@@ -19,22 +19,13 @@ export class TodoListComponent {
 
   private selectedItem: TodoItem = null;
 
-  differ: KeyValueDiffer<string, any>;
-
-  constructor(private differs: KeyValueDiffers) {
-
-  this.differ = this.differs.find({}).create();
-  }
-
   ngOnInit(): void {
     this.filterList();
   }
 
   saveTodo(): void {
     if (this.selectedItem !== null) {
-      let idxItem: number = this.todos.findIndex((item) => {
-        return this.selectedItem.id === item.id;
-      });
+      let idxItem: number = this.getIndexItem(this.selectedItem);
   
       this.todos[idxItem].text = this.todoText;
 
@@ -69,17 +60,32 @@ export class TodoListComponent {
     this.filterList();
   }
 
+  setCompletedItem(item: TodoItem) {
+    let idxItem: number = this.getIndexItem(item);
+
+    this.todos[idxItem] = item;
+    
+    this.filterList();
+  }
+
   setFilter(filter: TodoFilter) {
     const filterIdx: number = this.filters.findIndex((f) => {
       return f.type === filter.type;
     });
+
     if (filterIdx !== -1) {
       this.filters[filterIdx] = filter;
     } else {
       this.filters.push(filter);
     }
-debugger;
+
     this.filterList();
+  }
+
+  private getIndexItem(item: TodoItem): number {
+    return this.todos.findIndex((i) => {
+      return item.id === i.id;
+    });
   }
 
   private filterList() {

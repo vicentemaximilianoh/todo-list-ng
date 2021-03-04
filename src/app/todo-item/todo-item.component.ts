@@ -12,10 +12,15 @@ export class TodoItemComponent implements OnInit {
   @Input() item: TodoItem;
   @Output() deleteItemEvent = new EventEmitter<string>();
   @Output() editItemEvent = new EventEmitter<TodoItem>();
+  @Output() setCompletedItemEvent = new EventEmitter<TodoItem>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  setCompleted(item: TodoItem) {
+    this.setCompletedItemEvent.emit(item);
   }
 
   editItem(item: TodoItem) {

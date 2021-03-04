@@ -1,6 +1,9 @@
 <div class="todo-list">
     <h1>Todo List</h1>
-    <app-todo-filter [filters]="filters" (setFilterEvent)="setFilter($event)"></app-todo-filter>
+    <app-todo-filter 
+        class="todo-list-filter"
+        [filters]="filters" 
+        (setFilterEvent)="setFilter($event)"></app-todo-filter>
     <form 
         class="todo-form" 
         (ngSubmit)="saveTodo()">
@@ -8,6 +11,7 @@
             type="text" 
             class="todo-form-input" 
             name="todoText" 
+            placeholder="Something to do..."
             autocomplete="off"
             [(ngModel)]="todoText" />
     </form>

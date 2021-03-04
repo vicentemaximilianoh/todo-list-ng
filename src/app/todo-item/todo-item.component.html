@@ -1,3 +1,14 @@
-<input type="checkbox" name="itemCompleted" id="itemCompleted" (change)="setCompleted(item)" [(ngModel)]="item.isCompleted">
-<div class="todo-item-text" (click)="editItem(item)">{{item.text}}</div>
-<button type="button" (click)="deleteItem(item.id)">x</button>
+<input 
+    type="checkbox" 
+    name="itemCompleted" 
+    id="itemCompleted" 
+    class="todo-item-check"
+    (change)="setCompleted(item)" 
+    [(ngModel)]="item.isCompleted">
+<div 
+    class="todo-item-text" 
+    (click)="editItem(item)">{{item.text}}</div>
+<button 
+    type="button" 
+    class="todo-item-button"
+    (click)="deleteItem(item.id)">x</button>

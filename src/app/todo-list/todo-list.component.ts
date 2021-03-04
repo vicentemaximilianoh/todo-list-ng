@@ -1,6 +1,6 @@
 import {uniqueId} from 'lodash';
 
-import { Component } from '@angular/core';
+import { Component, IterableDiffer, IterableDiffers } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
 import TodoFilter from '../models/TodoFilter';
@@ -18,9 +18,23 @@ export class TodoListComponent {
   public filters: TodoFilter[] = [];
 
   private selectedItem: TodoItem = null;
+  iterableDiffer: IterableDiffer<any>;
 
   ngOnInit(): void {
     this.filterList();
+  }
+  
+  constructor(private iterableDiffers: IterableDiffers) {
+    this.iterableDiffer = iterableDiffers.find([]).create(null);
+  }
+
+  ngDoCheck() {
+      let todoChanges = this.iterableDiffer.diff(this.todos);
+      let filterChanges = this.iterableDiffer.diff(this.filters);
+      if (todoChanges || filterChanges) {
+          // console.log('Changes detected!', todoChanges);
+          this.filterList();
+      }
   }
 
   saveTodo(): void {
@@ -41,31 +55,23 @@ export class TodoListComponent {
 
     this.todoText = '';
     this.selectedItem = null;
-
-    this.filterList();
   }
 
   editItem(item: TodoItem): void {
     this.todoText = item.text;
     this.selectedItem = item;
-
-    this.filterList();
   }
 
   deleteItem(id: string): void {
     this.todos = this.todos.filter((todo) => {
       return todo.id !== id;
     });
-
-    this.filterList();
   }
 
   setCompletedItem(item: TodoItem) {
     let idxItem: number = this.getIndexItem(item);
 
     this.todos[idxItem] = item;
-    
-    this.filterList();
   }
 
   setFilter(filter: TodoFilter) {
@@ -78,8 +84,6 @@ export class TodoListComponent {
     } else {
       this.filters.push(filter);
     }
-
-    this.filterList();
   }
 
   private getIndexItem(item: TodoItem): number {
@@ -116,6 +120,7 @@ export class TodoListComponent {
         filteredTodos.push(todo);
       }
     });
+
     this.filteredTodos = filteredTodos;
   }
 

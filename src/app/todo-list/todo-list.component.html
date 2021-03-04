@@ -1,12 +1,13 @@
 <div class="todo-list">
     <h1>Todo List</h1>
+    <app-todo-filter [filters]="filters" (setFilterEvent)="setFilter($event)"></app-todo-filter>
     <form class="todo-form" (ngSubmit)="saveTodo()">
         <input type="text" class="todo-form-input" name="todoText" [(ngModel)]="todoText" />
     </form>
     <div class="todo-list-items">
         <app-todo-item 
             class="todo-item" 
-            *ngFor="let item of todos; index as i" 
+            *ngFor="let item of filteredTodos; index as i" 
             [item]="item"
             (editItemEvent)="editItem($event)"
             (deleteItemEvent)="deleteItem($event)"></app-todo-item>

@@ -1,0 +1,21 @@
+<div class="todo-filter">
+    <div class="todo-filter-status">
+        <button 
+            type="button" 
+            [ngClass]="{'todo-filter-button-active': isFilterActive('ALL')}"
+            (click)="setFilter({type: 'STATUS', value: 'ALL'})">All</button>
+        <button 
+            type="button" 
+            [ngClass]="{'todo-filter-button-active': isFilterActive('COMPLETED')}"
+            (click)="setFilter({type: 'STATUS', value: 'COMPLETED'})">Completed</button>
+        <button 
+            type="button" 
+            class="todo-filter-button"
+            [ngClass]="{'todo-filter-button-active': isFilterActive('TO_DO')}"
+            (click)="setFilter({type: 'STATUS', value: 'TO_DO'})">To Do</button>
+    </div>
+    <input 
+        type="text" 
+        name="textFilter" 
+        id="textFilter" (input)="setFilter({type: 'TEXT', value: textFilter})" [(ngModel)]="textFilter" />
+</div>

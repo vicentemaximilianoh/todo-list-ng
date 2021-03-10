@@ -7,21 +7,13 @@ import TodoItem from '../models/TodoItem';
   templateUrl: './todo-item.component.html',
   styleUrls: ['./todo-item.component.scss']
 })
-export class TodoItemComponent implements OnInit {
+export class TodoItemComponent {
 
   @Input() item: TodoItem;
   @Output() deleteItemEvent = new EventEmitter<string>();
   @Output() editItemEvent = new EventEmitter<TodoItem>();
-  @Output() setCompletedItemEvent = new EventEmitter<TodoItem>();
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  setCompleted(item: TodoItem) {
-    this.setCompletedItemEvent.emit(item);
-  }
 
   editItem(item: TodoItem) {
     this.editItemEvent.emit(item);

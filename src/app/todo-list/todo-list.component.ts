@@ -4,6 +4,7 @@ import { Component, IterableDiffer, IterableDiffers } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
 import TodoFilter from '../models/TodoFilter';
+import { TodoListService } from '../services/todo-list.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -16,43 +17,38 @@ export class TodoListComponent {
   public filteredTodos: TodoItem[] = [];
   public todoText: string = '';
   public filters: TodoFilter[] = [];
+  public iterableDiffer: IterableDiffer<any>;
 
   private selectedItem: TodoItem = null;
-  iterableDiffer: IterableDiffer<any>;
 
   ngOnInit(): void {
-    this.filterList();
+    this.todos = this.todoListService.getTodos();
+    this.filters = this.todoListService.getFilters();
   }
   
-  constructor(private iterableDiffers: IterableDiffers) {
+  constructor(private iterableDiffers: IterableDiffers, public todoListService: TodoListService) {
     this.iterableDiffer = iterableDiffers.find([]).create(null);
   }
 
+  // Todo list needs to be filtered immediately when collection items of filters are changed.
   ngDoCheck() {
       let todoChanges = this.iterableDiffer.diff(this.todos);
       let filterChanges = this.iterableDiffer.diff(this.filters);
+
       if (todoChanges || filterChanges) {
-          // console.log('Changes detected!', todoChanges);
           this.filterList();
       }
   }
 
+  /* Todo items features */
   saveTodo(): void {
     if (this.selectedItem !== null) {
-      let idxItem: number = this.getIndexItem(this.selectedItem);
-  
-      this.todos[idxItem].text = this.todoText;
-
+      this.todoListService.editItem(this.selectedItem, this.todoText);
     } else {
-      const newItem: TodoItem = {
-        id: uniqueId(),
-        text: this.todoText,
-        isCompleted: false
-      };
-  
-      this.todos.push(newItem);
+      this.todoListService.addTodo(this.todoText);
     }
 
+    // Clear UI.
     this.todoText = '';
     this.selectedItem = null;
   }
@@ -63,65 +59,16 @@ export class TodoListComponent {
   }
 
   deleteItem(id: string): void {
-    this.todos = this.todos.filter((todo) => {
-      return todo.id !== id;
-    });
+    this.todoListService.deleteItem(id);
   }
 
-  setCompletedItem(item: TodoItem) {
-    let idxItem: number = this.getIndexItem(item);
-
-    this.todos[idxItem] = item;
-  }
-
+  /* Filter features */
   setFilter(filter: TodoFilter) {
-    const filterIdx: number = this.filters.findIndex((f) => {
-      return f.type === filter.type;
-    });
-
-    if (filterIdx !== -1) {
-      this.filters[filterIdx] = filter;
-    } else {
-      this.filters.push(filter);
-    }
-  }
-
-  private getIndexItem(item: TodoItem): number {
-    return this.todos.findIndex((i) => {
-      return item.id === i.id;
-    });
+    this.todoListService.setFilter(filter);
   }
 
   private filterList() {
-    const filteredTodos = [];
-    this.todos.forEach((todo) => {
-
-      let itemFiltered: boolean = true;
-      if (this.filters.length > 0) {
-        this.filters.forEach((filter) => {
-          if (filter.type === 'STATUS') {
-            if (filter.value === 'COMPLETED' && !todo.isCompleted) {
-                itemFiltered = false;
-            }
-
-            if (filter.value === 'TO_DO' && todo.isCompleted) {
-                itemFiltered = false;
-            }
-          }
-
-            if (filter.type === 'TEXT' && !todo.text.toLowerCase().includes(filter.value.toLowerCase())) {
-                itemFiltered = false;
-            }
-
-          });
-      }
-
-      if (itemFiltered) {
-        filteredTodos.push(todo);
-      }
-    });
-
-    this.filteredTodos = filteredTodos;
+    this.filteredTodos = this.todoListService.filterList(this.filters);
   }
 
 }

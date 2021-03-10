@@ -1,6 +1,6 @@
 import {uniqueId} from 'lodash';
 
-import { Component, IterableDiffer, IterableDiffers } from '@angular/core';
+import { Component, ElementRef, IterableDiffer, IterableDiffers, ViewChild } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
 import TodoFilter from '../models/TodoFilter';
@@ -12,6 +12,7 @@ import { TodoListService } from '../services/todo-list.service';
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent {
+  @ViewChild('todoInput', {static: true}) todoInput: ElementRef;
 
   public todos: TodoItem[] = [];
   public filteredTodos: TodoItem[] = [];
@@ -56,6 +57,7 @@ export class TodoListComponent {
   editItem(item: TodoItem): void {
     this.todoText = item.text;
     this.selectedItem = item;
+    this.todoInput.nativeElement.focus();
   }
 
   deleteItem(id: string): void {

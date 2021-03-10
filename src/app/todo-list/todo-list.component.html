@@ -6,13 +6,16 @@
         (setFilterEvent)="setFilter($event)"></app-todo-filter>
     <form 
         class="todo-form" 
-        (ngSubmit)="saveTodo()">
+        #f="ngForm"
+        (ngSubmit)="f.valid && saveTodo()">
         <input 
             type="text" 
             class="todo-form-input" 
             name="todoText" 
             placeholder="Something to do..."
             autocomplete="off"
+            required
+            #todoInput
             [(ngModel)]="todoText" />
     </form>
     <div 

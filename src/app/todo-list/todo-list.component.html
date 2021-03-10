@@ -15,7 +15,9 @@
             autocomplete="off"
             [(ngModel)]="todoText" />
     </form>
-    <div class="todo-list-items">
+    <div 
+        class="todo-list-items" 
+        *ngIf="todos.length > 0; else noTodos">
         <app-todo-item 
             class="todo-item" 
             *ngFor="let item of filteredTodos; index as i" 
@@ -25,3 +27,7 @@
             (deleteItemEvent)="deleteItem($event)"></app-todo-item>
     </div>
 </div>
+
+<ng-template #noTodos>
+    <p>No todos added yet.</p>
+</ng-template>

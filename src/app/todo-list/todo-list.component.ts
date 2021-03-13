@@ -1,6 +1,4 @@
-import {uniqueId} from 'lodash';
-
-import { Component, ElementRef, EventEmitter, Input, IterableDiffer, IterableDiffers, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
 import TodoFilter from '../models/TodoFilter';

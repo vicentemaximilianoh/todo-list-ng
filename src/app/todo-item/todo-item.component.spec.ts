@@ -25,9 +25,14 @@ describe('TodoItemComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', (done) => {
+  it('should create', () => {
     expect(component).toBeTruthy();
+  });
 
-    done();
+  it('should display proper elements', () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.todo-item-check')).toBeTruthy();
+    expect(compiled.querySelector('.todo-item-text')).toBeTruthy();
+    expect(compiled.querySelector('.todo-item-button')).toBeTruthy();
   });
 });

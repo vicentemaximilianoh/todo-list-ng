@@ -16,6 +16,7 @@ jobs:
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
   
   deploy:
+    machine: true
     working_directory: ~/todo-list-ng
     steps:
       - checkout

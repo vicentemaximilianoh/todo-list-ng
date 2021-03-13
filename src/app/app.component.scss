@@ -3,3 +3,24 @@
     width: 50%;
     margin: auto;
 }
+
+.todos-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 50%;
+    max-width: 90%;
+    margin: auto;
+
+    color: #ccc;
+
+    .todos-filter,
+    .todos-list {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1em;
+    }
+
+}

@@ -28,24 +28,27 @@ export class TodoListService {
       isCompleted: false
     };
 
-    this.todos.push(newItem);
+    this.todos = [...this.todos, newItem];
   }
 
   editItem(todoItem: TodoItem, todoText: string) {
     let idxItem: number = this.getIndexItem(todoItem);
-  
-    this.todos[idxItem].text = todoText;
+    todoItem.text = todoText;
+
+    this.todos = [...this.todos];
+    this.todos[idxItem] = todoItem;
   }
 
   deleteItem(id: string) {
-    const itemIdx = this.todos.findIndex((todo) => todo.id === id);
-    this.todos.splice(itemIdx, 1);
+    this.todos = this.todos.filter((todo) => todo.id !== id);
   }
 
-  setItemAsComplete(item: TodoItem) {
-    let idxItem: number = this.getIndexItem(item);
+  toggleCompleted(todoItem: TodoItem) {
+    let idxItem: number = this.getIndexItem(todoItem);
+    todoItem.isCompleted = !todoItem.isCompleted;
 
-    this.todos[idxItem] = item;
+    this.todos = [...this.todos];
+    this.todos[idxItem] = todoItem;
   }
 
   setFilter(filter: TodoFilter) {
@@ -54,15 +57,16 @@ export class TodoListService {
     });
 
     if (filterIdx !== -1) {
+      this.filters = [...this.filters];
       this.filters[filterIdx] = filter;
     } else {
-      this.filters.push(filter);
+      this.filters = [...this.filters, filter];
     }
   }
 
-  filterList(filters: TodoFilter[]) {
+  filterList(todos: TodoItem[], filters: TodoFilter[]) {
     const filteredTodos = [];
-    this.todos.forEach((todo) => {
+    todos.forEach((todo) => {
 
       let itemFiltered: boolean = true;
       if (filters.length > 0) {

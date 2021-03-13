@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
 
@@ -12,6 +12,7 @@ export class TodoItemComponent {
   @Input() item: TodoItem;
   @Output() deleteItemEvent = new EventEmitter<string>();
   @Output() editItemEvent = new EventEmitter<TodoItem>();
+  @Output() toggleCompletedEvent = new EventEmitter<TodoItem>();
 
   constructor() { }
 
@@ -21,6 +22,10 @@ export class TodoItemComponent {
 
   deleteItem(id: string) {
     this.deleteItemEvent.emit(id);
+  }
+
+  toggleCompleted(item: TodoItem) {
+    this.toggleCompletedEvent.emit(item);
   }
 
 }

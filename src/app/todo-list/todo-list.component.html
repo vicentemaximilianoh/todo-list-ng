@@ -1,32 +1,29 @@
-<div class="todo-list">
-    <h1>Todo List</h1>
-    <app-todo-filter 
-        class="todo-list-filter"
-        [filters]="filters" 
-        (setFilterEvent)="setFilter($event)"></app-todo-filter>
+<div class="todos-list">
     <form 
-        class="todo-form" 
-        #f="ngForm"
-        (ngSubmit)="f.valid && saveTodo()">
-        <input 
-            type="text" 
-            class="todo-form-input" 
-            name="todoText" 
-            placeholder="Something to do..."
-            autocomplete="off"
-            required
-            #todoInput
-            [(ngModel)]="todoText" />
+    class="todos-form" 
+    #f="ngForm"
+    (ngSubmit)="f.valid && saveTodo()">
+    <input 
+        type="text" 
+        class="todos-form-input" 
+        name="todoText" 
+        placeholder="Something to do..."
+        autocomplete="off"
+        required
+        #todoInput
+        [(ngModel)]="todoText" />
     </form>
     <div 
-        class="todo-list-items" 
+        class="todos-list-items" 
         *ngIf="todos.length > 0; else noTodos">
         <app-todo-item 
             class="todo-item" 
-            *ngFor="let item of filteredTodos; index as i" 
-            [item]="item"
+            *ngFor="let todo of todos | todosFilter:filters" 
+            [item]="todo"
             (editItemEvent)="editItem($event)"
+            (toggleCompletedEvent)="toggleCompleted($event)"
             (deleteItemEvent)="deleteItem($event)"></app-todo-item>
+
     </div>
 </div>
 

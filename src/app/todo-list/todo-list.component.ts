@@ -1,6 +1,6 @@
 import {uniqueId} from 'lodash';
 
-import { Component, ElementRef, IterableDiffer, IterableDiffers, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, IterableDiffer, IterableDiffers, Output, ViewChild } from '@angular/core';
 
 import TodoItem from '../models/TodoItem';
 import TodoFilter from '../models/TodoFilter';
@@ -12,34 +12,15 @@ import { TodoListService } from '../services/todo-list.service';
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent {
+
   @ViewChild('todoInput', {static: true}) todoInput: ElementRef;
+  @Input() todos: TodoItem[];
+  @Input() filters: TodoFilter[];
 
-  public todos: TodoItem[] = [];
-  public filteredTodos: TodoItem[] = [];
   public todoText: string = '';
-  public filters: TodoFilter[] = [];
-  public iterableDiffer: IterableDiffer<any>;
-
   private selectedItem: TodoItem = null;
 
-  ngOnInit(): void {
-    this.todos = this.todoListService.getTodos();
-    this.filters = this.todoListService.getFilters();
-  }
-  
-  constructor(private iterableDiffers: IterableDiffers, public todoListService: TodoListService) {
-    this.iterableDiffer = iterableDiffers.find([]).create(null);
-  }
-
-  // Todo list needs to be filtered immediately when collection items of filters are changed.
-  ngDoCheck() {
-      let todoChanges = this.iterableDiffer.diff(this.todos);
-      let filterChanges = this.iterableDiffer.diff(this.filters);
-
-      if (todoChanges || filterChanges) {
-          this.filterList();
-      }
-  }
+  constructor(public todoListService: TodoListService) {}
 
   /* Todo items features */
   saveTodo(): void {
@@ -64,13 +45,7 @@ export class TodoListComponent {
     this.todoListService.deleteItem(id);
   }
 
-  /* Filter features */
-  setFilter(filter: TodoFilter) {
-    this.todoListService.setFilter(filter);
+  toggleCompleted(item: TodoItem) {
+    this.todoListService.toggleCompleted(item);
   }
-
-  private filterList() {
-    this.filteredTodos = this.todoListService.filterList(this.filters);
-  }
-
 }
